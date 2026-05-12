@@ -1,19 +1,46 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ShoppingCart } from "lucide-react";
+
+const notificationsData = [
+  { name: "Mariana S.", city: "São Paulo, SP", time: "há 2 minutos" },
+  { name: "Juliana R.", city: "Curitiba, PR", time: "há 5 minutos" },
+  { name: "Beatriz L.", city: "Rio de Janeiro, RJ", time: "há 12 minutos" },
+  { name: "Fernanda M.", city: "Belo Horizonte, MG", time: "há 8 minutos" },
+  { name: "Carla P.", city: "Salvador, BA", time: "há 15 minutos" },
+  { name: "Amanda K.", city: "Porto Alegre, RS", time: "há 3 minutos" },
+  { name: "Regina V.", city: "Fortaleza, CE", time: "há 20 minutos" },
+  { name: "Patrícia G.", city: "Recife, PE", time: "há 7 minutos" },
+  { name: "Letícia B.", city: "Goiânia, GO", time: "há 10 minutos" },
+  { name: "Cláudia O.", city: "Manaus, AM", time: "há 4 minutos" },
+];
 
 export default function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [currentNotification, setCurrentNotification] = useState<number | null>(null);
+
+  useEffect(() => {
+    const showRandomNotification = () => {
+      const randomIndex = Math.floor(Math.random() * notificationsData.length);
+      setCurrentNotification(randomIndex);
+      
+      // Hide after 6 seconds
+      setTimeout(() => {
+        setCurrentNotification(null);
+      }, 6000);
+    };
+
+    // Initial delay: 2 seconds after page load
+    const initialTimer = setTimeout(showRandomNotification, 2000);
+
+    // Interval for subsequent notifications: Every 12 seconds
+    const interval = setInterval(showRandomNotification, 12000);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
+  }, []);
 
   const toggleFaq = (e: React.MouseEvent, index: number) => {
     e.stopPropagation();
@@ -240,49 +267,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* FORMAT */}
-      <section className="format-section">
-        <div className="container">
-          <p className="section-label">O material</p>
-          <h2 className="section-title">
-            Um guia completo que você
-            <br />
-            <em>acessa agora mesmo, em qualquer lugar</em>
-          </h2>
-
-          <div className="format-grid">
-            <div className="format-item">
-              <span className="format-item-icon">📱</span>
-              <p className="format-item-title">Formato Digital</p>
-              <p className="format-item-text">
-                Acesse pelo celular, tablet ou computador. Sem prazo de validade, sempre à mão quando precisar.
-              </p>
-            </div>
-            <div className="format-item">
-              <span className="format-item-icon">⚡</span>
-              <p className="format-item-title">Acesso imediato</p>
-              <p className="format-item-text">
-                Após a compra, você recebe tudo instantaneamente. Sem esperar chegada de produto físico.
-              </p>
-            </div>
-            <div className="format-item">
-              <span className="format-item-icon">🌿</span>
-              <p className="format-item-title">Ingredientes fáceis</p>
-              <p className="format-item-text">
-                Todas as ervas são acessíveis - encontradas em mercados, feiras e lojas de produtos naturais.
-              </p>
-            </div>
-            <div className="format-item">
-              <span className="format-item-icon">📖</span>
-              <p className="format-item-title">Linguagem simples</p>
-              <p className="format-item-text">
-                Não é preciso nenhum conhecimento prévio. O guia foi feito para quem está começando do zero.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* AUTHOR */}
       <section className="author-section">
         <div className="container">
@@ -500,7 +484,7 @@ export default function App() {
 
       {/* FOOTER */}
       <footer>
-        <p>© 2025 Coleção Banho de Luz - Todos os direitos reservados.</p>
+        <p>© 2026 Coleção Banho de Luz - Todos os direitos reservados.</p>
         <p style={{ marginTop: '8px', maxWidth: '520px', marginLeft: 'auto', marginRight: 'auto', opacity: 0.7 }}>
           Os resultados podem variar de pessoa para pessoa. Este produto não substitui tratamentos médicos, psicológicos
           ou psiquiátricos.
@@ -511,6 +495,30 @@ export default function App() {
           <a href="#" onClick={(e) => handleNavigation(e, "#")}>Contato</a>
         </p>
       </footer>
+
+      {/* PURCHASE NOTIFICATION */}
+      <AnimatePresence>
+        {currentNotification !== null && (
+          <motion.div
+            initial={{ opacity: 0, x: -50, y: 20 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: -50, y: 20 }}
+            className="fixed bottom-6 left-6 z-[9999] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.15)] rounded-2xl p-5 border border-[#C9993A]/20 flex items-center gap-4 max-w-[340px] pointer-events-none"
+          >
+            <div className="w-12 h-12 bg-[#2D4A35] rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+              <ShoppingCart className="w-6 h-6 text-[#E8C47A]" />
+            </div>
+            <div>
+              <p className="text-[13px] font-bold text-[#1A2E20] leading-tight">
+                {notificationsData[currentNotification].name} de {notificationsData[currentNotification].city}
+              </p>
+              <p className="text-[11px] text-[#4A5E50] opacity-80 mt-1 leading-snug">
+                Acabou de adquirir a Coleção Banho de Luz {notificationsData[currentNotification].time}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
