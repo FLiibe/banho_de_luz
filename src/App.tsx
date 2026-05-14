@@ -313,7 +313,7 @@ export default function App() {
             </div>
             <p className="price-from">De R$ 97,00</p>
             <p className="price-main">
-              <sup>R$</sup>9,90
+              <sup>R$</sup>27,00
             </p>
             <p className="price-note">pagamento único • acesso imediato e vitalício</p>
 
@@ -332,7 +332,7 @@ export default function App() {
               className="btn-pricing"
               onClick={(e) => handleNavigation(e, "https://pay.hotmart.com/S105796273C")}
             >
-              ✦ Quero minha Coleção Agora por R$ 9,90 ✦
+              ✦ Quero minha Coleção Agora por R$ 27,00 ✦
             </a>
 
             <div className="trust-badges">
@@ -477,7 +477,7 @@ export default function App() {
           >
             ✦ Começar minha jornada de Luz agora ✦
           </a>
-          <p className="final-sub">Por apenas R$ 9,90 • Acesso imediato • 7 dias de garantia</p>
+          <p className="final-sub">Por apenas R$ 27,00 • Acesso imediato • 7 dias de garantia</p>
           <div className="divider" style={{ marginTop: '40px' }}></div>
         </div>
       </section>
